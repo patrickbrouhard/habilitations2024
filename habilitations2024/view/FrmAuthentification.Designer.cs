@@ -94,6 +94,7 @@
             this.buttonConnexion.TabIndex = 2;
             this.buttonConnexion.Text = "Connexion";
             this.buttonConnexion.UseVisualStyleBackColor = true;
+            this.buttonConnexion.Click += new System.EventHandler(this.buttonConnexion_Click);
             // 
             // FrmAuthentification
             // 
