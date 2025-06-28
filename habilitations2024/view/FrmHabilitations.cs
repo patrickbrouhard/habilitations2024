@@ -244,17 +244,17 @@ namespace habilitations2024.view
         {
             if (!ChampsPwdValides())
             {
-                MessageBox.Show("Les mots de passe doivent être remplis et identiques.");
+                MessageBox.Show("Veuillez remplir les deux champs mot de passe avec des valeurs identiques.");
                 return;
             }
-            if (textBoxPwd.Text != textBoxEncore.Text)
+            if (!controller.PwdFort(textBoxPwd.Text))
             {
-                MessageBox.Show("Les mots de passe doivent être identiques.");
+                MessageBox.Show("Le mot de passe doit comporter entre 8 et 30 caractères, avec au moins une majuscule, une minuscule, un chiffre, un caractère spécial, et aucun espace.", "Information");
                 return;
             }
-            Developpeur devSelectionne = (Developpeur)bdgDeveloppeurs.Current;
-            devSelectionne.Pwd = textBoxPwd.Text;
-            controller.UpdatePwd(devSelectionne);
+            Developpeur developpeur = (Developpeur)bdgDeveloppeurs.Current;
+            developpeur.Pwd = textBoxPwd.Text;
+            controller.UpdatePwd(developpeur);
             BasculerModeChangementPwd(false);
             MessageBox.Show("Mot de passe enregistré.");
         }

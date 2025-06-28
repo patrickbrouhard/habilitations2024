@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace habilitations2024.controller
@@ -78,6 +79,39 @@ namespace habilitations2024.controller
         public void UpdatePwd(Developpeur developpeur)
         {
             developpeurAccess.UpdatePwd(developpeur);
+        }
+        /// <summary>
+        /// Vérifie si le mot de passe respecte les critères de sécurité.
+        /// </summary>
+        /// <param name="pwd">Mot de passe à tester.</param>
+        /// <returns>true si valide ; false sinon.</returns>
+        public bool PwdFort(string pwd)
+        {
+            // Longueur : entre 8 et 30 caractères
+            if (pwd.Length < 8 || pwd.Length > 30)
+                return false;
+
+            // Minuscule Unicode
+            if (!Regex.Match(pwd, @"\p{Ll}").Success)
+                return false;
+
+            // Majuscule Unicode
+            if (!Regex.Match(pwd, @"\p{Lu}").Success)
+                return false;
+
+            // Chiffre
+            if (!Regex.Match(pwd, @"[0-9]").Success)
+                return false;
+
+            // Caractère spécial (liste définie)
+            if (!Regex.Match(pwd, @"[!@#$%^&*()_\-+=\[\]{}|;:,.<>/?]").Success)
+                return false;
+
+            // Aucun espace ou caractère blanc
+            if (Regex.Match(pwd, @"\s").Success)
+                return false;
+
+            return true;
         }
     }
 }
