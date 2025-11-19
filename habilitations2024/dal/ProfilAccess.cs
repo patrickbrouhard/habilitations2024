@@ -1,4 +1,5 @@
 ﻿using habilitations2024.model;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,18 +33,24 @@ namespace habilitations2024.dal
             if (access?.Manager == null) //cf "opérateur de navigation conditionnelle" pour "?"
                 return profils;
 
+            string req = "SELECT * FROM profil ORDER BY nom;";
+
             try
             {
-                var resultat = access.Manager.ReqSelect("SELECT idprofil, nom FROM `profil`;");
-                if (resultat == null) return profils;
+                var records = access.Manager.ReqSelect(req);
+                if (records == null) return profils;
+                Log.Debug("ProfilAccess.GesLesProfils nb records = {0}", records.Count);
 
-                foreach (object[] result in resultat)
+                foreach (object[] record in records)
                 {
-                    profils.Add(new Profil((int)result[0], (string)result[1]));
+                    Log.Debug("ProfilAccess.GestLesProfils id={0} nom={1}", record[0], record[1]);
+                    Profil profil = new Profil((int)record[0], (string)record[1]);
+                    profils.Add(profil);
                 }
             }
             catch (Exception e)
             {
+                Log.Error("ProfilAccess.GetLesProfils() catch - req={0} - erreur={1}", req, e.Message);
                 Console.Error.WriteLine($"Erreur dans GetLesProfils() : {e.Message}");
                 Environment.Exit(0); //on me dit qu'il ne faut jamais l'arrêt dans une couche basse...
             }

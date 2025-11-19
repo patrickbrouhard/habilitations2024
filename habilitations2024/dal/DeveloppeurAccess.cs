@@ -1,4 +1,5 @@
 ﻿using habilitations2024.model;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,10 @@ namespace habilitations2024.dal
         {
             this.access = Access.GetInstance();
         }
-        //récupère et retourne les développeurs
+        /// <summary>
+        /// récupère et retourne les développeurs
+        /// </summary>
+        /// <returns></returns>
         public List<Developpeur> GetLesDeveloppeurs()
         {
             var developpeurs = new List<Developpeur>();
@@ -26,19 +30,24 @@ namespace habilitations2024.dal
             if (access?.Manager == null)
                 return developpeurs;
 
+            //@"" = verbatim string literal = permet entre autres d'écrire sur plrs lignes
+            var req = @"
+                        SELECT iddeveloppeur, d.nom, prenom, tel, mail, p.idprofil, p.nom 
+                        FROM developpeur d 
+                        JOIN profil p USING(idprofil) 
+                        ORDER BY d.nom, prenom;";
+
             try
             {
-                //@"" = verbatim string literal = permet entre autres d'écrire sur plrs lignes
-                var req = @"
-                            SELECT iddeveloppeur, d.nom, prenom, tel, mail, p.idprofil, p.nom 
-                            FROM developpeur d 
-                            JOIN profil p USING(idprofil) 
-                            ORDER BY d.nom, prenom;";
-                var resultat = access.Manager.ReqSelect(req);
-                if (resultat == null) return developpeurs;
+                var records = access.Manager.ReqSelect(req);
+                if (records == null) 
+                    return developpeurs;
+                Log.Debug("DeveloppeurAccess.GetLesDeveloppeurs nb records = {0}", records.Count);
 
-                foreach (object[] r in resultat)
+                foreach (object[] r in records)
                 {
+                    Log.Debug("DeveloppeurAccess.GetLesDeveloppeurs Profil : id={0} nom={1}", r[5], r[6]);
+                    Log.Debug("DeveloppeurAccess.GetLesDeveloppeurs Developpeur : id={0} nom={1} prenom={2} tel={3} mail={4} ", r[0], r[1], r[2], r[3], r[4]);
                     var dProfil = new Profil((int)r[5], (string)r[6]);
                     developpeurs.Add(new Developpeur(
                         (int)r[0],           // iddeveloppeur
@@ -52,6 +61,8 @@ namespace habilitations2024.dal
             }
             catch (Exception e)
             {
+                req = req.Replace(Environment.NewLine, " ");
+                Log.Error("DeveloppeurAccess.GetLesDeveloppeurs catch - req={0} - erreur={1}", req, e.Message);
                 Console.Error.WriteLine($"Erreur dans GetLesDeveloppeurs() : {e.Message}");
                 Environment.Exit(0);
             }
@@ -196,7 +207,7 @@ namespace habilitations2024.dal
             }
             catch (Exception e)
             {
-
+                Log.Error("DeveloppeurAccess.ControleAuthentification catch - req={0} - erreur={1}", req, e.Message);
                 Console.Error.WriteLine($"Erreur dans ControleAuthentification() : {e.Message}");
                 Environment.Exit(0);
             }
