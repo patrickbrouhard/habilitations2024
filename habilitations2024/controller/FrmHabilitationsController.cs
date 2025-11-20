@@ -1,5 +1,6 @@
 ﻿using habilitations2024.dal;
 using habilitations2024.model;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,10 @@ namespace habilitations2024.controller
     /// </summary>
     public class FrmHabilitationsController
     {
+        /// <summary>
+        /// Représente le délai d'attente pour les opérations Regex
+        /// </summary>
+        private static readonly TimeSpan RegexTimeout = TimeSpan.FromMilliseconds(100);
         /// <summary>
         /// objet d'accès aux opérations possibles sur Developpeur
         /// </summary>
@@ -87,31 +92,39 @@ namespace habilitations2024.controller
         /// <returns>true si valide ; false sinon.</returns>
         public bool PwdFort(string pwd)
         {
-            // Longueur : entre 8 et 30 caractères
-            if (pwd.Length < 8 || pwd.Length > 30)
-                return false;
+            try
+            {
+                // Longueur : entre 8 et 30 caractères
+                if (pwd.Length < 8 || pwd.Length > 30)
+                    return false;
 
-            // Minuscule Unicode
-            if (!Regex.Match(pwd, @"\p{Ll}").Success)
-                return false;
+                // Minuscule Unicode
+                if (!Regex.IsMatch(pwd, @"\p{Ll}", RegexOptions.None, RegexTimeout))
+                    return false;
 
-            // Majuscule Unicode
-            if (!Regex.Match(pwd, @"\p{Lu}").Success)
-                return false;
+                // Majuscule Unicode
+                if (!Regex.IsMatch(pwd, @"\p{Lu}", RegexOptions.None, RegexTimeout))
+                    return false;
 
-            // Chiffre
-            if (!Regex.Match(pwd, @"[0-9]").Success)
-                return false;
+                // Chiffre
+                if (!Regex.IsMatch(pwd, @"[0-9]", RegexOptions.None, RegexTimeout))
+                    return false;
 
-            // Caractère spécial (liste définie)
-            if (!Regex.Match(pwd, @"[!@#$%^&*()_\-+=\[\]{}|;:,.<>/?]").Success)
-                return false;
+                // Caractère spécial (liste définie)
+                if (!Regex.IsMatch(pwd, @"[!@#$%^&*()_\-+=\[\]{}|;:,.<>/?]", RegexOptions.None, RegexTimeout))
+                    return false;
 
-            // Aucun espace ou caractère blanc
-            if (Regex.Match(pwd, @"\s").Success)
-                return false;
+                // Aucun espace ou caractère blanc
+                if (Regex.IsMatch(pwd, @"\s", RegexOptions.None, RegexTimeout))
+                    return false;
 
-            return true;
+                return true;
+            }
+            catch (RegexMatchTimeoutException ex)
+            {
+                Log.Error("FrmHabilitationsController.PwdFort catch - erreur={0}", ex.Message);
+                return false;
+            }
         }
     }
 }

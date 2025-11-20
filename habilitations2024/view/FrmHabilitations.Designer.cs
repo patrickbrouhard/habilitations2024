@@ -130,7 +130,7 @@
             this.buttonModifier.TabIndex = 1;
             this.buttonModifier.Text = "Modifier";
             this.buttonModifier.UseVisualStyleBackColor = true;
-            this.buttonModifier.Click += new System.EventHandler(this.buttonModifier_Click);
+            this.buttonModifier.Click += new System.EventHandler(this.ButtonModifier_Click);
             // 
             // buttonSupprimer
             // 
@@ -140,7 +140,7 @@
             this.buttonSupprimer.TabIndex = 1;
             this.buttonSupprimer.Text = "Supprimer";
             this.buttonSupprimer.UseVisualStyleBackColor = true;
-            this.buttonSupprimer.Click += new System.EventHandler(this.buttonSupprimer_Click);
+            this.buttonSupprimer.Click += new System.EventHandler(this.ButtonSupprimer_Click);
             // 
             // buttonChangerPwd
             // 
@@ -150,7 +150,7 @@
             this.buttonChangerPwd.TabIndex = 1;
             this.buttonChangerPwd.Text = "Maj pwd";
             this.buttonChangerPwd.UseVisualStyleBackColor = true;
-            this.buttonChangerPwd.Click += new System.EventHandler(this.buttonChangerPwd_Click);
+            this.buttonChangerPwd.Click += new System.EventHandler(this.ButtonChangerPwd_Click);
             // 
             // label1
             // 
@@ -241,7 +241,7 @@
             this.buttonDevEnregistrer.TabIndex = 1;
             this.buttonDevEnregistrer.Text = "Enregistrer";
             this.buttonDevEnregistrer.UseVisualStyleBackColor = true;
-            this.buttonDevEnregistrer.Click += new System.EventHandler(this.buttonDevEnregistrer_Click);
+            this.buttonDevEnregistrer.Click += new System.EventHandler(this.ButtonDevEnregistrer_Click);
             // 
             // buttonDevAnnuler
             // 
@@ -251,7 +251,7 @@
             this.buttonDevAnnuler.TabIndex = 1;
             this.buttonDevAnnuler.Text = "Annuler";
             this.buttonDevAnnuler.UseVisualStyleBackColor = true;
-            this.buttonDevAnnuler.Click += new System.EventHandler(this.buttonDevAnnuler_Click);
+            this.buttonDevAnnuler.Click += new System.EventHandler(this.ButtonDevAnnuler_Click);
             // 
             // label6
             // 
@@ -295,7 +295,7 @@
             this.buttonPwdEnregistrer.TabIndex = 1;
             this.buttonPwdEnregistrer.Text = "Enregistrer";
             this.buttonPwdEnregistrer.UseVisualStyleBackColor = true;
-            this.buttonPwdEnregistrer.Click += new System.EventHandler(this.buttonPwdEnregistrer_Click);
+            this.buttonPwdEnregistrer.Click += new System.EventHandler(this.ButtonPwdEnregistrer_Click);
             // 
             // buttonPwdAnnuler
             // 
@@ -305,7 +305,7 @@
             this.buttonPwdAnnuler.TabIndex = 1;
             this.buttonPwdAnnuler.Text = "Annuler";
             this.buttonPwdAnnuler.UseVisualStyleBackColor = true;
-            this.buttonPwdAnnuler.Click += new System.EventHandler(this.buttonPwdAnnuler_Click);
+            this.buttonPwdAnnuler.Click += new System.EventHandler(this.ButtonPwdAnnuler_Click);
             // 
             // FrmHabilitations
             // 

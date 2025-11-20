@@ -22,11 +22,11 @@ namespace habilitations2024.view
         /// <summary>
         /// Source de données liée aux développeurs.
         /// </summary>
-        BindingSource bdgDeveloppeurs = new BindingSource();
+        readonly BindingSource bdgDeveloppeurs = new BindingSource();
         /// <summary>
         /// Source de données liée aux profils.
         /// </summary>
-        BindingSource bdgProfils = new BindingSource();
+        readonly BindingSource bdgProfils = new BindingSource();
         /// <summary>
         /// Indique si la fenêtre est en mode édition développeur.
         /// </summary>
@@ -35,12 +35,12 @@ namespace habilitations2024.view
         public FrmHabilitations()
         {
             InitializeComponent();
-            init();
+            Init();
         }
         /// <summary>
         /// Initialise les composants et remplit les données.
         /// </summary>
-        private void init()
+        private void Init()
         {
             controller = new FrmHabilitationsController();
             RemplirListeDeveloppeurs();
@@ -107,12 +107,11 @@ namespace habilitations2024.view
         /// </summary>
         /// <param name="sender">Source de l’événement</param>
         /// <param name="e">Arguments de l’événement</param>
-        private void buttonModifier_Click(object sender, EventArgs e)
+        private void ButtonModifier_Click(object sender, EventArgs e)
         {
             if (dataGridViewDeveloppeurs.SelectedRows.Count == 1)
             {
                 BasculerModeEditionDev(true);
-                //Developpeur developpeur = (Developpeur)bdgDeveloppeurs.List[bdgDeveloppeurs.Position];
                 Developpeur devSelectionne = (Developpeur)bdgDeveloppeurs.Current;
                 textBoxNom.Text = devSelectionne.Nom;
                 textBoxPrenom.Text = devSelectionne.Prenom;
@@ -131,7 +130,7 @@ namespace habilitations2024.view
         /// </summary>
         /// <param name="sender">Source de l’événement</param>
         /// <param name="e">Arguments de l’événement</param>
-        private void buttonDevAnnuler_Click(object sender, EventArgs e)
+        private void ButtonDevAnnuler_Click(object sender, EventArgs e)
         {
             if (AfficherMessageConfirmation("annuler"))
             {
@@ -143,7 +142,7 @@ namespace habilitations2024.view
         /// </summary>
         /// <param name="sender">Source de l’événement</param>
         /// <param name="e">Arguments de l’événement</param>
-        private void buttonSupprimer_Click(object sender, EventArgs e)
+        private void ButtonSupprimer_Click(object sender, EventArgs e)
         {
             if (dataGridViewDeveloppeurs.SelectedRows.Count == 1)
             {
@@ -165,7 +164,7 @@ namespace habilitations2024.view
         /// <param name="commande">Commande à confirmer (ex. : "supprimer")</param>
         /// <param name="dev">Développeur concerné, optionnel</param>
         /// <returns>true si l’utilisateur confirme, false sinon</returns>
-        private bool AfficherMessageConfirmation(string commande, Developpeur dev = null)
+        private static bool AfficherMessageConfirmation(string commande, Developpeur dev = null)
         {
             string nomComplet = dev != null ? $"{dev.Prenom} {dev.Nom}" : "";
             var message = $"Voulez-vous vraiment {commande} {nomComplet} ?";
@@ -183,7 +182,7 @@ namespace habilitations2024.view
         /// </summary>
         /// <param name="sender">Source de l’événement</param>
         /// <param name="e">Arguments de l’événement</param>
-        private void buttonChangerPwd_Click(object sender, EventArgs e)
+        private void ButtonChangerPwd_Click(object sender, EventArgs e)
         {
             if (dataGridViewDeveloppeurs.SelectedRows.Count == 1)
             {
@@ -199,7 +198,7 @@ namespace habilitations2024.view
         /// </summary>
         /// <param name="sender">Source de l’événement</param>
         /// <param name="e">Arguments de l’événement</param>
-        private void buttonPwdAnnuler_Click(object sender, EventArgs e)
+        private void ButtonPwdAnnuler_Click(object sender, EventArgs e)
         {
             BasculerModeChangementPwd(false);
         }
@@ -208,7 +207,7 @@ namespace habilitations2024.view
         /// </summary>
         /// <param name="sender">Source de l’événement</param>
         /// <param name="e">Arguments de l’événement</param>
-        private void buttonDevEnregistrer_Click(object sender, EventArgs e)
+        private void ButtonDevEnregistrer_Click(object sender, EventArgs e)
         {
             if (!ChampsDevValides())
             {
@@ -223,7 +222,6 @@ namespace habilitations2024.view
                 devSelectionne.Prenom = textBoxPrenom.Text;
                 devSelectionne.Email = textBoxEmail.Text;
                 devSelectionne.Tel = textBoxTel.Text;
-                //comboBoxProfil.SelectedIndex = comboBoxProfil.FindStringExact(devSelectionne.Profil.Nom);
                 devSelectionne.Profil = profil;
                 controller.UpdateDeveloppeur(devSelectionne);
             }
@@ -240,7 +238,7 @@ namespace habilitations2024.view
         /// </summary>
         /// <param name="sender">Source de l’événement</param>
         /// <param name="e">Arguments de l’événement</param>
-        private void buttonPwdEnregistrer_Click(object sender, EventArgs e)
+        private void ButtonPwdEnregistrer_Click(object sender, EventArgs e)
         {
             if (!ChampsPwdValides())
             {
